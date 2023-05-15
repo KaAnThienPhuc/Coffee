@@ -24,6 +24,7 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      // Lấy ra tài khoản và mật khẩu người dùng nhập
         String email = request.getParameter("email");
         String pass = request.getParameter("pass");
         User user = UserDao.getInstance().checkLogin(email, pass);
@@ -35,12 +36,16 @@ public class Login extends HttpServlet {
         String hostname = addr.getHostName();
         System.out.println("IP address of localhost from Java Program: " + ipAddress);
         System.out.println("Name of hostname : " + hostname);
+        //Hệ thống tiến hành kiểm tra xác thực đăng nhập:
+        // Nếu người dùng nhập sai tài khoản hoặc mật khẩu: hệ thống sẽ hiển thị lỗi cho người dùng
         if (user == null || email == null || pass == null) {
             request.setAttribute("error", "Thông tin đăng nhập không chính xác");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             DB.me().insert(new Log(Log.INFO,null,ipAddress,"LOGIN FAILED","Login failed: \n Email: " +email.toString(),0));
         }
         else {
+            //Nếu thành công, người dùng sẽ đăng nhập thành công vào hệ thống 
+           // Usecase này kết thúc
             HttpSession session = request.getSession(true);
             session.setAttribute("auth", user);
             session.setMaxInactiveInterval(1800);

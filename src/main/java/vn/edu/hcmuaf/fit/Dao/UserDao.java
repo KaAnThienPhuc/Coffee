@@ -105,7 +105,7 @@ public class UserDao {
 
 
     }
-
+   //Kiểm tra tài khoản của người dùng
     public boolean checkEmail(String email) {
         List<User> users = getAll();
         for (User u : users)
